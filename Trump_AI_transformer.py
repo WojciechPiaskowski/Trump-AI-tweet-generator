@@ -1,11 +1,13 @@
+import keras_nlp.metrics
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import re
 import tensorflow as tf
-from tensorflow import keras
-import keras_nlp
-from tensorflow.keras.layers import TextVectorization
+from keras_nlp.layers import TokenAndPositionEmbedding, TransformerDecoder
+from keras.layers import TextVectorization
+from tensorflow.python.keras.layers import Input, Dense
+from tensorflow.python.keras import Model
 
 # style config
 pd.set_option('display.width', 400)
@@ -63,7 +65,7 @@ vocab_dict = dict(zip(range(vocab_size), vocab))
 print(f'vocabulary size is {vocab_size}')
 
 # create batched and shuffled datasets with tensorflow
-# TODO: change tf datasets to padnas/numpy?
+# TODO: change tf datasets to padnas/numpy or deeply understand tf datasets
 batch_size = 64
 
 x_train = tf.data.Dataset.from_tensor_slices(tweets_train)
@@ -97,3 +99,26 @@ x_test = x_test.prefetch(tf.data.AUTOTUNE)
 # batches are 64 tweets with 59 words (or padding) each
 for entry in x_train.take(1):
     print(entry)
+
+# create the model
+
+embed_dim = 128
+num_head = 4
+
+def create_model():
+    i = Input(shape=(maxLen,), dtype=tf.int32)
+    embedding_layer = TokenAndPositionEmbedding(vocab_size, maxLen, embed_dim)(i)
+    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(embedding_layer)
+    x = Dense(vocab_size, activation='softmax')(decoder)
+
+    model = Model(i, x)
+
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
+                  metrics=[keras_nlp.metrics.Perplexity(), 'accuracy'])
+
+    return model
+
+model = create_model()
+model.summary()  # TODO: summary output???
+
+
