@@ -1,3 +1,6 @@
+import random
+
+import keras.callbacks
 import keras_nlp.metrics
 import numpy as np
 import pandas as pd
@@ -105,10 +108,13 @@ for entry in x_train.take(1):
 embed_dim = 128
 num_head = 4
 
+
 def create_model():
     i = Input(shape=(maxLen,), dtype=tf.int32)
     embedding_layer = TokenAndPositionEmbedding(vocab_size, maxLen, embed_dim)(i)
     decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(embedding_layer)
+    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
+    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
     x = Dense(vocab_size, activation='softmax')(decoder)
 
     model = Model(i, x)
@@ -118,7 +124,77 @@ def create_model():
 
     return model
 
+
 model = create_model()
 model.summary()  # TODO: summary output???
 
 
+# callback
+class TextSampler(keras.callbacks.Callback):
+    def __init__(self, start_prompt, max_tokens):
+        self.start_prompt = start_prompt
+        self.max_tokens = max_tokens
+
+    # method to choose a word based on highest probability
+    def sample_token(self, logits):
+        logits, indices = tf.math.top_k(logits, k=5, sorted=True)
+        indices = np.asarray(indices).astype('int32')
+        yhat = tf.keras.activations.softmax(tf.expand_dims(logits, 0))[0]
+        yhat = np.asarray(yhat).astype('float32')
+
+        return np.random.choice(indices, p=yhat)
+
+    def on_epoch_end(self, epoch, logs=None):
+        decoded_sample = self.start_prompt
+
+        for i in range(self.max_tokens - 1):
+            tokenized_prompt = vectorize_layer([decoded_sample])[:, :-1]
+            yhat = self.model.predict([tokenized_prompt], verbose=1)
+            sample_index = len(decoded_sample.strip().split()) - 1
+
+            sampled_token = self.sample_token(yhat[0][sample_index])
+            sampled_token = vocab_dict[sampled_token]
+            decoded_sample += ' ' + sampled_token
+
+        print(f'generated tweet:\n{decoded_sample}\n')
+
+
+# first 5 words of a random tweet will be used as a seed / initial input
+
+random_tweet = ' '.join(random.choice(tweets).split()[:4])
+sampler = TextSampler(random_tweet, 30)
+reducelr = keras.callbacks.ReduceLROnPlateau(patience=10, monitor='val_loss')
+
+# model training
+
+model = create_model()
+history = model.fit(x_train, validation_data=x_test, epochs=10, callbacks=[sampler, reducelr])
+
+# model inference
+
+def sample_token(logits):
+
+    logits, indices = tf.math.top_k(logits, k=5, sorted=True)
+    indices = np.asarray(indices).astype('int32')
+    yhat = tf.keras.activations.softmax(tf.expand_dims(logits, 0))[0]
+    yhat = np.asarray(yhat).astype('float32')
+
+    return np.random.choice(indices, p=yhat)
+
+def generate_tweet(prompt, tweet_length=20):
+
+    generated_tweet = prompt
+
+    for i in range(tweet_length - 1):
+
+        tokenized_prompt = vectorize_layer([generated_tweet])[:, :-1]
+        yhat = model.predict([tokenized_prompt], verbose=1)
+        sample_index = len(generated_tweet.strip().split())-1
+
+        sampled_token = sample_token(yhat[0][sample_index])
+        sampled_token = vocab_dict[sampled_token]
+        generated_tweet += ' ' + sampled_token
+
+    return generated_tweet
+
+print(generate_tweet('America is finaly able to'))

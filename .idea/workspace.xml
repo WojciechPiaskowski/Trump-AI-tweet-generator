@@ -65,7 +65,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668879620552</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="initial model architecture">
+      <created>1669051926527</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669051926527</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -75,6 +82,7 @@
     <MESSAGE value="refactor of the project, archiving previous (LSTM) attempts and generated sample tweets" />
     <MESSAGE value="upload trasnformer.py file" />
     <MESSAGE value="text preprocessing" />
-    <option name="LAST_COMMIT_MESSAGE" value="text preprocessing" />
+    <MESSAGE value="initial model architecture" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial model architecture" />
   </component>
 </project>
