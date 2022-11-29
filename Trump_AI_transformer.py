@@ -1,5 +1,4 @@
 import random
-
 import keras.callbacks
 import keras_nlp.metrics
 import numpy as np
@@ -9,8 +8,15 @@ import re
 import tensorflow as tf
 from keras_nlp.layers import TokenAndPositionEmbedding, TransformerDecoder
 from keras.layers import TextVectorization
-from tensorflow.python.keras.layers import Input, Dense
-from tensorflow.python.keras import Model
+
+# from tensorflow.python.keras.layers import Input, Dense
+# from tensorflow.python.keras import Model
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras import Model
+
+import matplotlib as mpl
+mpl.use('Qt5Agg')
+import matplotlib.pyplot as plt
 
 # style config
 pd.set_option('display.width', 400)
@@ -113,8 +119,8 @@ def create_model():
     i = Input(shape=(maxLen,), dtype=tf.int32)
     embedding_layer = TokenAndPositionEmbedding(vocab_size, maxLen, embed_dim)(i)
     decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(embedding_layer)
-    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
-    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
+    # decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
+    # decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
     x = Dense(vocab_size, activation='softmax')(decoder)
 
     model = Model(i, x)
@@ -198,3 +204,18 @@ def generate_tweet(prompt, tweet_length=20):
     return generated_tweet
 
 print(generate_tweet('America is finaly able to'))
+print(generate_tweet('What are those 5', 30))
+
+# charts
+
+plt.plot(np.array(history.history['loss']), label='loss')
+plt.plot(np.array(history.history['val_loss']), label='val_loss')
+plt.legend()
+
+plt.plot(np.array(history.history['accuracy']), label='accuracy')
+plt.plot(np.array(history.history['val_accuracy']), label='val_accuracy')
+plt.legend()
+
+plt.plot(np.array(history.history['perplexity']), label='perplexity')
+plt.plot(np.array(history.history['val_perplexity']), label='val_perplexity')
+plt.legend()
