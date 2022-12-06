@@ -1,0 +1,116 @@
+model: dec: 4, embed_dim: 64, heads: 4, drop: 0.3, epochs: 10,
+val_loss: 2.0,
+min_val_loss: 1.94,
+val_accuary: 0.74,
+val_perplexity: 7.4 
+
+model: dec: 4, embed_dim: 128, heads: 4, drop: 0.3, epochs: 10,
+val_loss: 1.97,
+min_val_loss: 1.91,
+val_accuary: 0.74,
+val_perplexity: 7.2 
+
+model: dec: 4, embed_dim: 256, heads: 4, drop: 0.3, epochs: 10,
+val_loss: 2.03,
+min_val_loss: 1.91,
+val_accuary: 0.74,
+val_perplexity: 7.6 
+
+model: dec: 4, embed_dim: 256, heads: 5, drop: 0.3, epochs: 10,
+val_loss: 2.06,
+min_val_loss: 1.96,
+val_accuary: 0.74,
+val_perplexity: 7.9 
+
+model: dec: 8, embed_dim: 128, heads: 5, drop: 0.6, epochs: 10,
+val_loss: 1.96,
+min_val_loss: 1.96,
+val_accuary: 0.74,
+val_perplexity: 7.1 
+
+model: dec: 9, embed_dim: 128, heads: 5, drop: 0.7, epochs: 20,
+val_loss: 1.94,
+min_val_loss: 1.94,
+val_accuary: 0.74,
+val_perplexity: 7.0 
+
+model: dec: 4, embed_dim: 128, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.94,
+min_val_loss: 1.92,
+val_accuary: 0.74,
+val_perplexity: 6.9 
+
+model: dec: 3, embed_dim: 128, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.92,
+min_val_loss: 1.91,
+val_accuary: 0.74,
+val_perplexity: 6.8 
+
+model: dec: 3, embed_dim: 128, heads: 2, drop: 0.3, epochs: 20,
+val_loss: 1.95,
+min_val_loss: 1.93,
+val_accuary: 0.74,
+val_perplexity: 7.0 
+
+model: dec: 2, embed_dim: 128, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.97,
+min_val_loss: 1.94,
+val_accuary: 0.74,
+val_perplexity: 7.2 
+
+### top
+model: dec: 3, embed_dim: 256, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.91,
+min_val_loss: 1.87,
+val_accuary: 0.75,
+val_perplexity: 6.7 
+
+model: dec: 3, embed_dim: 512, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 2.44,
+min_val_loss: 2.4,
+val_accuary: 0.7,
+val_perplexity: 11.4 
+
+model: dec: 4, embed_dim: 256, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.94,
+min_val_loss: 1.89,
+val_accuary: 0.74,
+val_perplexity: 7.0 
+
+model: dec: 2, embed_dim: 256, heads: 3, drop: 0.3, epochs: 20,
+val_loss: 1.92,
+min_val_loss: 1.87,
+val_accuary: 0.75,
+val_perplexity: 6.8 
+
+model: dec: 3, embed_dim: 256, heads: 2, drop: 0.3, epochs: 20,
+val_loss: 1.93,
+min_val_loss: 1.9,
+val_accuary: 0.74,
+val_perplexity: 6.9 
+
+### top2
+model: dec: 3, embed_dim: 256, heads: 4, drop: 0.3, epochs: 20,
+val_loss: 1.91,
+min_val_loss: 1.86,
+val_accuary: 0.75,
+val_perplexity: 6.8 
+
+model: dec: 3, embed_dim: 256, heads: 5, drop: 0.3, epochs: 20,
+val_loss: 1.94,
+min_val_loss: 1.9,
+val_accuary: 0.74,
+val_perplexity: 7.0 
+
+model: dec: 3, embed_dim: 256, heads: 4, drop: 0.4, epochs: 20,
+val_loss: 1.91,
+min_val_loss: 1.87,
+val_accuary: 0.75,
+val_perplexity: 6.8 
+
+model: dec: 3, embed_dim: 256, heads: 4, drop: 0.3, epochs: 20,
+val_loss: 1.94,
+min_val_loss: 1.94,
+val_accuary: 0.74,
+val_perplexity: 7.0 
+
