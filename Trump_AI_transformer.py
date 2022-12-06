@@ -13,6 +13,9 @@ from keras.layers import TextVectorization
 # from tensorflow.python.keras import Model
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Model
+from tensorflow_addons.optimizers import AdamW
+from tensorflow.keras.optimizers import Adam
+
 
 import matplotlib as mpl
 mpl.use('Qt5Agg')
@@ -111,21 +114,27 @@ for entry in x_train.take(1):
 
 # create the model
 
-embed_dim = 128
+# hyper parameters
+embed_dim = 256
 num_head = 4
-
+dropout = 0.3
+epochs = 20
+add_decoders = 2
 
 def create_model():
     i = Input(shape=(maxLen,), dtype=tf.int32)
     embedding_layer = TokenAndPositionEmbedding(vocab_size, maxLen, embed_dim)(i)
-    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(embedding_layer)
-    # decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
-    # decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=0.5)(decoder)
+    decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=dropout)(embedding_layer)
+
+    for dec in range(add_decoders):
+        decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=dropout)(decoder)
+
+    # x = Dense(128, activation='relu')(decoder)
     x = Dense(vocab_size, activation='softmax')(decoder)
 
     model = Model(i, x)
 
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
+    model.compile(optimizer=Adam(decay=0.001), loss='sparse_categorical_crossentropy',
                   metrics=[keras_nlp.metrics.Perplexity(), 'accuracy'])
 
     return model
@@ -164,6 +173,7 @@ class TextSampler(keras.callbacks.Callback):
 
         print(f'generated tweet:\n{decoded_sample}\n')
 
+early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=0)
 
 # first 5 words of a random tweet will be used as a seed / initial input
 
@@ -174,7 +184,7 @@ reducelr = keras.callbacks.ReduceLROnPlateau(patience=10, monitor='val_loss')
 # model training
 
 model = create_model()
-history = model.fit(x_train, validation_data=x_test, epochs=10, callbacks=[sampler, reducelr])
+history = model.fit(x_train, validation_data=x_test, epochs=epochs, callbacks=[sampler, reducelr, early_stopping])
 
 # model inference
 
@@ -203,10 +213,20 @@ def generate_tweet(prompt, tweet_length=20):
 
     return generated_tweet
 
-print(generate_tweet('America is finaly able to'))
-print(generate_tweet('What are those 5', 30))
+print(generate_tweet('I think that hillary is', 50))
+print(generate_tweet('What are those 5', 50))
 
-# charts
+# charts and evaluation
+specs = f'dec: {add_decoders+1}, embed_dim: {embed_dim}, heads: {num_head}, drop: {dropout}, epochs: {epochs}'
+
+with open('training_experiments.txt', 'a+') as f:
+    f.write(
+f"""model: {specs},
+val_loss: {np.round(history.history['val_loss'][-1], 2)},
+min_val_loss: {np.round(np.min(history.history['val_loss']), 2)},
+val_accuary: {np.round(history.history['val_accuracy'][-1], 2)},
+val_perplexity: {np.round(history.history['val_perplexity'][-1], 1)} 
+\n""")
 
 plt.plot(np.array(history.history['loss']), label='loss')
 plt.plot(np.array(history.history['val_loss']), label='val_loss')

@@ -79,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669543655661</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="experiments">
+      <created>1669741926923</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669741926923</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -91,6 +98,7 @@
     <MESSAGE value="text preprocessing" />
     <MESSAGE value="initial model architecture" />
     <MESSAGE value="inference and first model version" />
-    <option name="LAST_COMMIT_MESSAGE" value="inference and first model version" />
+    <MESSAGE value="experiments" />
+    <option name="LAST_COMMIT_MESSAGE" value="experiments" />
   </component>
 </project>
