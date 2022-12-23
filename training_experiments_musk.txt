@@ -1,6 +1,0 @@
-model: dec: 3, embed_dim: 256, heads: 4, drop: 0.3, epochs: 20,
-val_loss: 0.52,
-min_val_loss: 0.52,
-val_accuary: 0.95,
-val_perplexity: 1.7 
-
