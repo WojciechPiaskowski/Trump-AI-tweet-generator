@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b93f837-a529-4146-a8f4-e69d5605bae3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/HP_AI_transformer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HP_examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tweets_examples.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2010.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2011.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2012.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2013.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2014.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2015.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2016.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2017.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2018.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2019.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2020.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2021.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elon_musk_tweets/2022.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/harry_potter_AI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training_experiments_musk.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trump_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trump_AI_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/harry_potter_AI.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/training_experiments_HP.txt" beforeDir="false" afterPath="$PROJECT_DIR$/training_experiments_HP.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,13 +26,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2HlVO1HVSNYtaiMam5cVm3EOccM" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;last.edited.regexp&quot;: &quot;Sample Text&quot;,
@@ -122,10 +115,18 @@
       <option name="project" value="LOCAL" />
       <updated>1670355395561</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="testing other datasets: elon musks tweets and harry potter books">
+      <created>1671832968766</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1671832968766</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>

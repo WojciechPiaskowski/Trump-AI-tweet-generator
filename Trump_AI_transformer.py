@@ -1,25 +1,22 @@
+# import libraries
 import random
+import re
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 import keras.callbacks
 import keras_nlp.metrics
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import re
 import tensorflow as tf
 from keras_nlp.layers import TokenAndPositionEmbedding, TransformerDecoder
 from keras.layers import TextVectorization
-
-# from tensorflow.python.keras.layers import Input, Dense
-# from tensorflow.python.keras import Model
-from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.layers import Input, Dense  # imports not found in pycharm (autossugest doesn't work)
 from tensorflow.keras import Model
-from tensorflow_addons.optimizers import AdamW
 from tensorflow.keras.optimizers import Adam
 
-
-import matplotlib as mpl
+# select matplotlib backend to run charts in pycharm
 mpl.use('Qt5Agg')
-import matplotlib.pyplot as plt
 
 # style config
 pd.set_option('display.width', 400)
@@ -51,14 +48,14 @@ print(f'total number of words: {df["content"].apply(lambda x: len(x.split())).su
 # divide tweets into train, test sets (80/20).
 # Validation set will be skipped, because there is less than 1M words in the dataset
 length = len(df['content'])
-tweets = list(df['content'])
-tweets_train = list(tweets[: int(0.8 * length)])
-tweets_test = list(tweets[int(0.8 * length):])
+full_text = list(df['content'])
+full_text_train = list(full_text[: int(0.8 * length)])
+full_text_test = list(full_text[int(0.8 * length):])
 
 # get maximum length of a tweet
 maxLen = df['content'].apply(lambda x: len(x.split())).max()
 
-
+# preprocess function to lowercase all strings
 def input_standardizer(input_string):
     sentence = tf.strings.lower(input_string)
     return sentence
@@ -66,61 +63,59 @@ def input_standardizer(input_string):
 
 # get vocabulary, its size and create a dictionary
 # tokenize sentences and make all the words lower case
-# make the tokenized input length equal to maximum length of tweets, apply padding if length is lower
+# make the tokenized input length equal to maxLen parameter, apply padding if length is lower
 vectorize_layer = TextVectorization(
     output_mode='int', output_sequence_length=int(maxLen + 1), standardize=input_standardizer)
-vectorize_layer.adapt(tweets)
+vectorize_layer.adapt(full_text)
 vocab = vectorize_layer.get_vocabulary()
 vocab_size = len(vocab)
 vocab_dict = dict(zip(range(vocab_size), vocab))
 
 print(f'vocabulary size is {vocab_size}')
 
-# create batched and shuffled datasets with tensorflow
-# TODO: change tf datasets to padnas/numpy or deeply understand tf datasets
+# create batched and shuffled datasets with tensorflow datasets
 batch_size = 64
 
-x_train = tf.data.Dataset.from_tensor_slices(tweets_train)
+x_train = tf.data.Dataset.from_tensor_slices(full_text_train)
 x_train = x_train.shuffle(buffer_size=256)
 x_train = x_train.batch(batch_size)
 
-x_test = tf.data.Dataset.from_tensor_slices(tweets_test)
+x_test = tf.data.Dataset.from_tensor_slices(full_text_test)
 x_test = x_test.shuffle(buffer_size=256)
 x_test = x_test.batch(batch_size)
 
 
 # preprocess the data using vectorize_layer and create x and y arrays
 # y array is the target array, which is the next word in the tweet, based on previous words
-def preprocess_tweets(tweet):
-    tweet = tf.expand_dims(tweet, -1)
-    tokenized_tweets = vectorize_layer(tweet)
-    x = tokenized_tweets[:, :-1]
-    y = tokenized_tweets[:, 1:]
+def preprocess_full_text(sentence):
+    sentence = tf.expand_dims(sentence, -1)
+    tokenized_full_text = vectorize_layer(sentence)
+    x = tokenized_full_text[:, :-1]
+    y = tokenized_full_text[:, 1:]
     return x, y
 
 
-tf.autograph.experimental.do_not_convert(preprocess_tweets)
+# preprocess train and test datasets with preprocess_full_text
+x_train = x_train.map(preprocess_full_text)
+x_test = x_test.map(preprocess_full_text)
 
-x_train = x_train.map(tf.autograph.experimental.do_not_convert(preprocess_tweets))
-x_train = x_train.prefetch(tf.data.AUTOTUNE)
-
-x_test = x_test.map(tf.autograph.experimental.do_not_convert(preprocess_tweets))
-x_test = x_test.prefetch(tf.data.AUTOTUNE)
-
-# input word sequences are offset by 1
-# batches are 64 tweets with 59 words (or padding) each
+# input and output word sequences are offset by 1
+# batches are 64 sentences with maxLen words (or padding) each
 for entry in x_train.take(1):
     print(entry)
 
 # create the model
-
-# hyper parameters
+# hyperparameters that will be tuned with experiments
+# high dropout layer due to training not enough data for a language model
 embed_dim = 256
 num_head = 4
 dropout = 0.3
 epochs = 20
 add_decoders = 2
 
+
+# transformer decoder based model architecture for next word prediction
+# user perplexity as additional metric
 def create_model():
     i = Input(shape=(maxLen,), dtype=tf.int32)
     embedding_layer = TokenAndPositionEmbedding(vocab_size, maxLen, embed_dim)(i)
@@ -129,36 +124,39 @@ def create_model():
     for dec in range(add_decoders):
         decoder = TransformerDecoder(intermediate_dim=embed_dim, num_heads=num_head, dropout=dropout)(decoder)
 
-    # x = Dense(128, activation='relu')(decoder)
     x = Dense(vocab_size, activation='softmax')(decoder)
 
-    model = Model(i, x)
+    hp_model = Model(i, x)
+    hp_model.compile(optimizer=Adam(decay=0.001), loss='sparse_categorical_crossentropy',
+                     metrics=[keras_nlp.metrics.Perplexity(), 'accuracy'])
 
-    model.compile(optimizer=Adam(decay=0.001), loss='sparse_categorical_crossentropy',
-                  metrics=[keras_nlp.metrics.Perplexity(), 'accuracy'])
-
-    return model
+    return hp_model
 
 
+# create the model and print a summary
 model = create_model()
-model.summary()  # TODO: summary output???
+model.summary()
 
 
-# callback
+# function to choose a word based on probability distribution
+# alternative approach would be to choose always the word with the highest probability
+def sample_token(logits):
+    logits, indices = tf.math.top_k(logits, k=5, sorted=True)
+    indices = np.asarray(indices).astype('int32')
+    yhat = tf.keras.activations.softmax(tf.expand_dims(logits, 0))[0]
+    yhat = np.asarray(yhat).astype('float32')
+
+    return np.random.choice(indices, p=yhat)
+
+
+# callback that creates an output sample after each epoch iteration
 class TextSampler(keras.callbacks.Callback):
     def __init__(self, start_prompt, max_tokens):
+        super().__init__()
         self.start_prompt = start_prompt
         self.max_tokens = max_tokens
 
-    # method to choose a word based on highest probability
-    def sample_token(self, logits):
-        logits, indices = tf.math.top_k(logits, k=5, sorted=True)
-        indices = np.asarray(indices).astype('int32')
-        yhat = tf.keras.activations.softmax(tf.expand_dims(logits, 0))[0]
-        yhat = np.asarray(yhat).astype('float32')
-
-        return np.random.choice(indices, p=yhat)
-
+    # on epoch end create a sample and decode it with vocab dictionary
     def on_epoch_end(self, epoch, logs=None):
         decoded_sample = self.start_prompt
 
@@ -167,75 +165,74 @@ class TextSampler(keras.callbacks.Callback):
             yhat = self.model.predict([tokenized_prompt], verbose=1)
             sample_index = len(decoded_sample.strip().split()) - 1
 
-            sampled_token = self.sample_token(yhat[0][sample_index])
+            sampled_token = sample_token(yhat[0][sample_index])
             sampled_token = vocab_dict[sampled_token]
             decoded_sample += ' ' + sampled_token
 
-        print(f'generated tweet:\n{decoded_sample}\n')
+        print(f'generated sentence:\n{decoded_sample}\n')
 
-early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=0)
 
-# first 5 words of a random tweet will be used as a seed / initial input
+# early stopping callback to cut the model before overfitting to the training data
+early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
 
-random_tweet = ' '.join(random.choice(tweets).split()[:4])
-sampler = TextSampler(random_tweet, 30)
+# first 5 words of a random sentence will be used as a seed / initial input for sample generation
+rand_sentence = ' '.join(random.choice(full_text).split()[:4])
+sampler = TextSampler(rand_sentence, 30)
+# callback that reduces learning rate if there is no improvement with loss
 reducelr = keras.callbacks.ReduceLROnPlateau(patience=10, monitor='val_loss')
 
 # model training
-
 model = create_model()
 history = model.fit(x_train, validation_data=x_test, epochs=epochs, callbacks=[sampler, reducelr, early_stopping])
 
-# model inference
 
-def sample_token(logits):
+# # model inference
+def generate_sentence(prompt, sentence_length=20):
+    generated_sentence = prompt
 
-    logits, indices = tf.math.top_k(logits, k=5, sorted=True)
-    indices = np.asarray(indices).astype('int32')
-    yhat = tf.keras.activations.softmax(tf.expand_dims(logits, 0))[0]
-    yhat = np.asarray(yhat).astype('float32')
-
-    return np.random.choice(indices, p=yhat)
-
-def generate_tweet(prompt, tweet_length=20):
-
-    generated_tweet = prompt
-
-    for i in range(tweet_length - 1):
-
-        tokenized_prompt = vectorize_layer([generated_tweet])[:, :-1]
+    for i in range(sentence_length - 1):
+        tokenized_prompt = vectorize_layer([generated_sentence])[:, :-1]
         yhat = model.predict([tokenized_prompt], verbose=1)
-        sample_index = len(generated_tweet.strip().split())-1
+        sample_index = len(generated_sentence.strip().split()) - 1
 
         sampled_token = sample_token(yhat[0][sample_index])
         sampled_token = vocab_dict[sampled_token]
-        generated_tweet += ' ' + sampled_token
+        generated_sentence += ' ' + sampled_token
 
-    return generated_tweet
+    return generated_sentence
 
-print(generate_tweet('I think that hillary is', 50))
-print(generate_tweet('What are those 5', 50))
 
-# charts and evaluation
-specs = f'dec: {add_decoders+1}, embed_dim: {embed_dim}, heads: {num_head}, drop: {dropout}, epochs: {epochs}'
+# testing the output
+print(generate_sentence('The focus should be on', 40))
+print(generate_sentence('America is the only country', 40))
+print(generate_sentence('Europe will need to think', 30))
+print(generate_sentence('Voters showed the importance of', 30))
+
+# save model hyperparameters and model metrics to a text file
+specs = f'dec: {add_decoders + 1}, embed_dim: {embed_dim}, heads: {num_head}, drop: {dropout}, batch_size: {batch_size}'
 
 with open('training_experiments.txt', 'a+') as f:
     f.write(
-f"""model: {specs},
+        f"""model: {specs},
 val_loss: {np.round(history.history['val_loss'][-1], 2)},
 min_val_loss: {np.round(np.min(history.history['val_loss']), 2)},
-val_accuary: {np.round(history.history['val_accuracy'][-1], 2)},
-val_perplexity: {np.round(history.history['val_perplexity'][-1], 1)} 
+val_accuracy: {np.round(history.history['val_accuracy'][-1], 2)},
+val_perplexity: {np.round(history.history['val_perplexity'][-1], 1)},
 \n""")
 
-plt.plot(np.array(history.history['loss']), label='loss')
-plt.plot(np.array(history.history['val_loss']), label='val_loss')
-plt.legend()
+# plots to understand the training during experimenting with hyperparameters
 
-plt.plot(np.array(history.history['accuracy']), label='accuracy')
-plt.plot(np.array(history.history['val_accuracy']), label='val_accuracy')
-plt.legend()
-
-plt.plot(np.array(history.history['perplexity']), label='perplexity')
-plt.plot(np.array(history.history['val_perplexity']), label='val_perplexity')
-plt.legend()
+# plt.plot(np.array(history.history['loss']), label='loss')
+# plt.plot(np.array(history.history['val_loss']), label='val_loss')
+# plt.legend()
+# plt.show()
+#
+# plt.plot(np.array(history.history['accuracy']), label='accuracy')
+# plt.plot(np.array(history.history['val_accuracy']), label='val_accuracy')
+# plt.legend()
+# plt.show()
+#
+# plt.plot(np.array(history.history['perplexity']), label='perplexity')
+# plt.plot(np.array(history.history['val_perplexity']), label='val_perplexity')
+# plt.legend()
+# plt.show()
