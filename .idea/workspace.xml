@@ -2,13 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b93f837-a529-4146-a8f4-e69d5605bae3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HP_AI_transformer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HP_examples.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tweets_examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Example inference/HP_examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Example inference/tweets_examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/training_experiments.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/training_experiments_HP.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generated_tweets_sample/transformer/tweets_examples.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HP_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/HP_AI_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HP_examples.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Trump_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trump_AI_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/harry_potter_AI.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/training_experiments_HP.txt" beforeDir="false" afterPath="$PROJECT_DIR$/training_experiments_HP.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training_experiments.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/training_experiments_HP.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tweets_examples.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671832968766</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="final files">
+      <created>1672328400725</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1672328400725</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -137,6 +149,7 @@
     <MESSAGE value="inference and first model version" />
     <MESSAGE value="experiments" />
     <MESSAGE value="testing other datasets: elon musks tweets and harry potter books" />
-    <option name="LAST_COMMIT_MESSAGE" value="testing other datasets: elon musks tweets and harry potter books" />
+    <MESSAGE value="final files" />
+    <option name="LAST_COMMIT_MESSAGE" value="final files" />
   </component>
 </project>

@@ -211,7 +211,7 @@ print(generate_sentence('Voters showed the importance of', 30))
 # save model hyperparameters and model metrics to a text file
 specs = f'dec: {add_decoders + 1}, embed_dim: {embed_dim}, heads: {num_head}, drop: {dropout}, batch_size: {batch_size}'
 
-with open('training_experiments.txt', 'a+') as f:
+with open('experiments\\training_experiments.txt', 'a+') as f:
     f.write(
         f"""model: {specs},
 val_loss: {np.round(history.history['val_loss'][-1], 2)},
