@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b93f837-a529-4146-a8f4-e69d5605bae3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Example inference/HP_examples.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Example inference/tweets_examples.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiments/training_experiments.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiments/training_experiments_HP.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generated_tweets_sample/transformer/tweets_examples.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot_LSTM.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot_LSTM2 (softmax words).py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HP_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/HP_AI_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HP_examples.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trump_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trump_AI_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training_experiments.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/training_experiments_HP.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tweets_examples.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot_LSTM.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot_LSTM2 (softmax words).py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672328400725</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="final changes, moves in folder structure">
+      <created>1672764286317</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1672764286317</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -150,6 +152,7 @@
     <MESSAGE value="experiments" />
     <MESSAGE value="testing other datasets: elon musks tweets and harry potter books" />
     <MESSAGE value="final files" />
-    <option name="LAST_COMMIT_MESSAGE" value="final files" />
+    <MESSAGE value="final changes, moves in folder structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="final changes, moves in folder structure" />
   </component>
 </project>
