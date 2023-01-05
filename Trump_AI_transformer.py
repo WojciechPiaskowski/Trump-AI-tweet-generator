@@ -24,7 +24,7 @@ pd.set_option('display.max_columns', 20)
 sns.set_style('whitegrid')
 
 # import Trump tweets (dataset from Kaggle.com, scrapped from twitter)
-df = pd.read_csv('realdonaldtrump.csv', sep=',')
+df = pd.read_csv('data/realdonaldtrump.csv', sep=',')
 # shuffle the dataframe
 df = df.sample(frac=1).reset_index(drop=True)
 
@@ -54,6 +54,7 @@ full_text_test = list(full_text[int(0.8 * length):])
 
 # get maximum length of a tweet
 maxLen = df['content'].apply(lambda x: len(x.split())).max()
+
 
 # preprocess function to lowercase all strings
 def input_standardizer(input_string):
@@ -219,6 +220,8 @@ min_val_loss: {np.round(np.min(history.history['val_loss']), 2)},
 val_accuracy: {np.round(history.history['val_accuracy'][-1], 2)},
 val_perplexity: {np.round(history.history['val_perplexity'][-1], 1)},
 \n""")
+
+model.save('models/Trump')
 
 # plots to understand the training during experimenting with hyperparameters
 

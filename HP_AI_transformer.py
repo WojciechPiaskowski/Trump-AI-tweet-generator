@@ -21,7 +21,7 @@ names = ['Book1.txt', 'Book2.txt', 'Book3.txt', 'Book4.txt', 'Book5.txt', 'Book6
 # join text into one string in full_text
 full_text = ''
 for file in names:
-    filepath = 'HPbooks/' + file
+    filepath = 'data/HPbooks/' + file
 
     with open(filepath, encoding='utf-8') as f:
         text = f.read()

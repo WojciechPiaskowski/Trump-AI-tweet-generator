@@ -1,0 +1,4 @@
+cmd examples fix this later
+
+
+python TrumpAI_inference.py -k 3 -p "we might be the last humans to ever" -w 20
