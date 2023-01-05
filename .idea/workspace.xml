@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b93f837-a529-4146-a8f4-e69d5605bae3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot_LSTM.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/archive (old models)/GAN and LSTM models/Trump_bot_LSTM2 (softmax words).py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HP_AI_inference.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/HP/keras_metadata.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/HP/saved_model.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/HP/variables/variables.data-00000-of-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/HP/variables/variables.index" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot_LSTM.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archive (old models)/LSTM first attempts/Trump_bot_LSTM2 (softmax words).py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HP_AI_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/HP_AI_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/training_experiments_HP.txt" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/training_experiments_HP.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smth smth.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

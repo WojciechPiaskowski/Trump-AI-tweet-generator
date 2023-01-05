@@ -166,7 +166,7 @@ class TextSampler(keras.callbacks.Callback):
 
 
 # early stopping callback to cut the model before overfitting to the training data
-early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
+early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
 
 # first 5 words of a random sentence will be used as a seed / initial input for sample generation
 rand_sentence = ' '.join(random.choice(full_text).split()[:4])
@@ -212,6 +212,8 @@ min_val_loss: {np.round(np.min(history.history['val_loss']), 2)},
 val_accuracy: {np.round(history.history['val_accuracy'][-1], 2)},
 val_perplexity: {np.round(history.history['val_perplexity'][-1], 1)},
 \n""")
+
+model.save('models/HP')
 
 # plots to understand the training during experimenting with hyperparameters
 

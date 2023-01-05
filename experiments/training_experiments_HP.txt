@@ -47,3 +47,9 @@ min_val_loss: 1.41,
 val_accuracy: 0.79,
 val_perplexity: 4.1,
 
+model: dec: 4, embed_dim: 256, heads: 5, drop: 0.5, batch_size: 64,
+val_loss: 1.42,
+min_val_loss: 1.41,
+val_accuracy: 0.79,
+val_perplexity: 4.1,
+
