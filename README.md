@@ -20,7 +20,7 @@ Passable arguments:
 **Default value: 40**
 
 Example terminal command:  
-**python HP_AI_inference.py -k 3 -p "Hermione met together with Ron to find" -w 30**
+**python HP_AI_inference.py -p "Hermione met together with Ron to find"**
 
 # Disclaimer 
 Model files in /models/ directory are stored via GIT LFS.  
