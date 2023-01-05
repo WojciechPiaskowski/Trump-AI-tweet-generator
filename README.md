@@ -3,6 +3,29 @@
 # Overview
 Project that uses NLP deep learning methods to create an AI model that generates tweets (text) based on Donald Trump's tweets dataset from Kaggle.
 
+# How to run
+1. Set up a virtual environment with libraries listed in requirements.txt
+2. Run either TrumpAI_inference.py or HP_AI_inference.py 
+
+Passable arguments:
+
+-k -> k predictions (INT) -> How many generated words at each token are taken under consideration. Eg. selecting k=1 will always generate the most probable word, while selecting k=2 will sometimes produce the second most probable word (both will be normalized to sum of 1, first word will have higher probability of being picked).  
+**Default value: 3.**
+
+-p -> prompt (STR) -> First words, on top of which the model will generate next words.  
+**Default value (Trump): "Today, the challenge we face".**    
+**Default value (HP): "Harry looked to Hermione as if she".**  
+
+-w -> n_words (INT) -> number of words to generate. Higher number of words might result in more whitespace in the end of the sentence.
+**Default value: 40**
+
+Example terminal command:  
+**python HP_AI_inference.py -k 3 -p "Hermione met together with Ron to find" -w 30**
+
+# Disclaimer 
+Model files in /models/ directory are stored via GIT LFS.  
+Read further to learn more about steps taken to train this model.
+
 # Data Sources
 Donald Trump tweets: https://www.kaggle.com/datasets/austinreese/trump-tweets  
 Harry Potter books: https://www.kaggle.com/datasets/balabaskar/harry-potter-books-corpora-part-1-7
